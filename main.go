@@ -1,16 +1,23 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
 
 func main() {
 	r := gin.Default()
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+
+	dbUrl := os.Getenv("DB_URL")
 
 	r.GET("/", func(c *gin.Context) {
-		c.String(200, "Hello, World!")
-	})
-
-	r.GET("/test", func(c *gin.Context) {
-		c.String(200, "Test")
+		c.String(200, "Hello, World! with dbUrl: %s", dbUrl)
 	})
 
 	r.GET("/ping", func(c *gin.Context) {
